@@ -1,0 +1,9 @@
+This contains 2 folders:
+[1]Web admin panel: One can upload images which will be updated to remote database from its local database. It is a web application whose html file is stored in public folder along with all javascript and css files. The other folder creates nodes to create and maintain database.
+
+[2]Image Gallery: All the images being stored in couchdb are imported using javascript and is synchronized by the same method as web admin panel. The main HTML file is available in demos folder which contains most of the important documents along. All the images can be viewed here and can be run as a electron desktop application.
+
+
+
+--Shashank Jain
+shankjn@gmail.com

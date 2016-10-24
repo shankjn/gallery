@@ -1,0 +1,11 @@
+{
+  "name": "carousel",
+  "version": "0.1.0",
+  "description": "index.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js "
+  },
+  "author": "shashank",
+  "license": "MIT"
+}

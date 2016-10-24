@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Admin Interface</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/patterns.css">
+    <link rel="stylesheet" href="css/app.css">
+    
+</head>
+<body>
+
+
+    <div id="sync-app" class="pattern">
+
+        <header>
+         
+            
+            <form id="replication-form">
+              
+                   
+              
+            </form>
+        </header>
+        
+
+    </div>
+
+    <div id="uploads-app">
+
+        <header>
+            
+            &nbsp;
+            <form id="upload-form">
+               
+                    <p>
+                        <label for="upload-file">Attach Image file <abbr title="Required"></abbr></label>
+                        <input id="upload-file" name="files[]" class="input" type="file" multiple required/>
+                        <input id="new-replication" type="hidden" value="http://localhost:5984/db" />
+                    </p>
+                    <div class="button-group">
+                        <button id="btn-upload" class="primary-button">Upload</button>
+                        <button id="btn-cancel-upload" class="button">Cancel</button>
+                    </div>
+         
+            </form>
+        </header>
+        <section class="pattern">
+            <h2>Image Uploads</h2>
+            <ol id="uploads-list" class="articles"></ol><!--/.articles-->
+            <div class="button-group">
+                <button id="btn-clear-db" class="button">Delete Uploads</button>
+            </div>
+        </section>
+    </div>
+
+    
+    <script src="js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="js/vendor/jquerysdk-core-1.4.min.js"></script>
+    <script src="js/vendor/jquerysdk-mime-1.4.min.js"></script>
+    <script src="js/vendor/underscore-1.4.4.min.js"></script>
+    <script src="js/vendor/IndexedDBShim.min.js"></script>
+    <script src="js/vendor/pouchdb-nightly.min.js"></script>
+    <script src="js/vendor/mustache.js"></script>
+    <script src="js/vendor/moment.min.js"></script>
+    <script src="js/app.js"></script>
+
+    <script id="tpl-upload" type="text/template">
+        <li>
+            <!--a href=""-->
+                <article class="module">
+                    {{#attachments}}
+                    <img class="pull-left" src="data:image/png;base64,{{data}}" alt="{{name}}"/>
+                    {{/attachments}}
+                    <h1 class="h">{{name}}</h1>
+                    <p class="caption"><time pubdate datetime="{{created_at}}">{{created_at_from_now}}</time></p>
+                </article>
+            <!--/a-->
+        </li>
+    </script>
+
+    <script id="tpl-replication" type="text/template">
+        <li>
+            <!--a href=""-->
+                <article class="module">
+                    <h1 class="h">{{url}}</h1>
+                    <p class="caption"><time pubdate datetime="{{created_at}}">{{created_at_from_now}}</time></p>
+                </article>
+            <!--/a-->
+        </li>
+    </script>
+
+    <script id="tpl-sync-stats" type="text/template">
+        <ul class="stats">
+            <li><div class="replication-count">Syncing <b>{{count}}</b> database(s)</div></li>
+            <li><b>{{read}}</b>↔<b>{{written}}</b> Uploads</li>
+        </ul>
+    </script> 
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+
+
+body {
+    font-family: 'Verdana';
+}
+
+#sync-app {
+    display: none;
+}
+
+#sync-app:target {
+    display: block;
+}
+
+#sync-app:target + #uploads-app {
+    display: none;
+}
+
+#new-replication{
+    width: 250px;
+}

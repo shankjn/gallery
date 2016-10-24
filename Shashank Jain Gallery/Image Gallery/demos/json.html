@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Image Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="jQuery Responsive Carousel - Owl Carusel">
+    <meta name="author" content="Bartosz Wojciechowski">
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700' rel='stylesheet' type='text/css'>
+    <link href="../assets/css/bootstrapTheme.css" rel="stylesheet">
+    <link href="../assets/css/custom.css" rel="stylesheet">
+
+    <!-- Owl Carousel Assets -->
+    <link href="../owl-carousel/owl.carousel.css" rel="stylesheet">
+    <link href="../owl-carousel/owl.theme.css" rel="stylesheet">
+
+    <link href="../assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    
+  </head>
+  <body>
+
+      
+   
+    <div id="title">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <h1>Image Gallery</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div id="demo">
+        <div class="container">
+          <div class="row">
+            <div class="span12">
+
+              <div id="owl-demo" class="owl-carousel" style="width: 100%;">
+                  <ol id="uploads-list" class="articles"></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+   
+
+
+    <script src="../assets/js/jquery-1.9.1.min.js"></script> 
+      <script src="js/vendor/jquerysdk-core-1.4.min.js"></script>   
+      <script src="../node_modules/pouchdb/dist/pouchdb.min.js"></script>
+    <script src="../owl-carousel/owl.carousel.js"></script>
+      <script src="js/vendor/jquerysdk-mime-1.4.min.js"></script>
+      <script src="js/vendor/underscore-1.4.4.min.js"></script>
+      <script src="js/vendor/IndexedDBShim.min.js"></script>
+      <script src="js/vendor/pouchdb-nightly.min.js"></script>
+      <script src="js/vendor/mustache.js"></script>
+      <script src="js/vendor/moment.min.js"></script>
+
+      <script id="tpl-upload" type="text/template">
+          <li style="list-style-type: none;">
+              <!--a href=""-->
+              <article class="module">
+                  {{#attachments}}
+                  <img class="pull-left" src="data:image/png;base64,{{data}}" alt="{{name}}" width="150" height="150" />
+                  {{/attachments}}
+                  <!--<h1 class="h">{{name}}</h1>
+                  <p class="caption"><time pubdate datetime="{{created_at}}">{{created_at_from_now}}</time></p>-->
+              </article>
+              <!--/a-->
+          </li>
+      </script>
+
+      <script>
+
+          //function loadUploads() {
+          $(document).ready(function () {
+              var pdb = new PouchDB('http://localhost:5984/db');
+              
+              pdb.allDocs({ include_docs: true }, function (err, res) {
+                  if (err) {
+                      alert('error');
+                      throw err;
+                  }
+
+                  $('#uploads-list').empty();
+                  _.each(res.rows, function (val, key, list) {
+                      pdb.get(
+                          val.doc._id,
+                          { attachments: true },
+                          function (err, doc) {
+                              if (err) throw err;
+
+                              
+                              doc.attachments = _.flatten(doc._attachments);
+                              // render {{ mustache }} tpl
+                              var upload = Mustache.to_html(
+                                  $('#tpl-upload').html(),
+                                  _.extend(doc, { created_at_from_now: moment(doc.created_at).fromNow() })
+                              );
+                             
+                              $('#uploads-list').append(upload);
+                          }
+                      );
+                  });
+              });
+              //}
+
+              $("#owl-demo").owlCarousel({
+                 
+                  loop: true,
+                  margin: 10,
+                  nav: true,
+                  responsiveClass: true,
+                  responsive: {
+                      0: {
+                          items: 10
+                      },
+                      600: {
+                          items: 15
+                      },
+                      1000: {
+                          items: 20
+                      }
+                  }
+              });
+          });
+
+
+      </script>
+
+    
+
+    <!--<script>
+    $(document).ready(function() {
+
+        $("#uploads-list").owlCarousel({
+          //jsonPath : "json/data.json"
+          loop: true,
+          margin: 10,
+          nav: true,
+          responsive: {
+              0: {
+                  items: 1
+              },
+              600: {
+                  items: 3
+              },
+              1000: {
+                  items: 5
+              }
+          }
+      });
+
+    });
+    </script>-->
+
+
+      <script>
+          const alertOnlineStatus = () => {
+              window.alert(navigator.online ? 'You are online, all the images will be updated soon!' : 'Sorry, you are offline, you can only view previously loaded images', 'Current Online Status')
+          }
+          window.addEventListener('online', alertOnlineStatus)
+          window.addEventListener('offline', alertOnlineStatus)
+
+          alertOnlineStatus()
+
+      </script>
+
+    <script src="../assets/js/bootstrap-collapse.js"></script>
+    <script src="../assets/js/bootstrap-transition.js"></script>
+    <script src="../assets/js/bootstrap-tab.js"></script>
+
+    <script src="../assets/js/google-code-prettify/prettify.js"></script>
+	  <script src="../assets/js/application.js"></script>
+
+  </body>
+</html>
